@@ -9,62 +9,38 @@ var gulp = require('gulp')
 
 gulp.task('build', function () {
 
-  var ignores = _(['.git', '.gitignore', 'gulpfile.js', 'package.json', 'node_modules', 'readme.md'])
-    .inject(function (hash, value) {
-      hash[value] = true
-      return hash
-    }, {})
+  var block = function (name) { return { '@': { name: name } } }
+  var contents = function (dir, tree) {
+    var base = fs.readdirSync(dir)
 
+    base.forEach(function (file) {
+      var full = path.join(dir, file)
+      var child = block(file)
 
-  var prepare = function(name, dir) { 
-    var base = _(fs.readdirSync(dir))
-      .filter(function(file) { return !ignores[file] })
-      .map(function(file) { return path.join(dir, file) })
-      .value()
+      if (fs.statSync(full).isDirectory()) {
+        if (!tree['dir']) { tree['dir'] = [] }
 
-    var tree = { '@': { name: name } }
-    var cur = tree
-    var stack = []
-
-    while (base.length > 0) {
-      var node = base.shift()
-      var name = path.basename(node)
-      if (fs.statSync(node).isDirectory()) {
-        stack.push(base)
-
-        var child = { p: cur, '@': { name: name } }
-        if (!cur['dir']) { cur['dir'] = [] }
-        cur['dir'].push(child)
-        cur = child
-
-        base = _(fs.readdirSync(node))
-          .map(function(file) { return path.join(node, file); })
-          .value()
+        tree['dir'].push(child)
+        contents(full, child)
       }
       else {
+        if (!tree['file']) { tree['file'] = [] }
+
         var md5 = crypto.createHash('md5')
-        var content = fs.readFileSync(node, { encoding: 'utf8' })
+        var content = fs.readFileSync(full, { encoding: 'utf8' })
         md5.update(content)
-
-        if (!cur['file']) { cur['file'] = [] }
-        cur['file'].push({ '@': { name: name, hash: md5.digest('hex') } })
+       
+        child['@'].hash = md5.digest('hex')
+        tree['file'].push(child)
       }
-
-      while (base.length == 0 && cur.p) {
-        var p = cur.p
-        delete cur.p
-        cur = p
-        base = stack.pop()
-      }
-    }
+    })
 
     return tree
   }
 
-  var community = prepare('magecommunity', path.join(__dirname, 'app', 'code', 'community'))
-  var design = prepare('magedesign', path.join(__dirname, 'app', 'design'))
-  var etc = prepare('mageetc', path.join(__dirname, 'app', 'etc'))
-  
+  var community = contents(path.join(__dirname, 'app', 'code', 'community'), block('magecommunity'))
+  var design = contents(path.join(__dirname, 'app', 'design'), block('magedesign'))
+  var etc = contents(path.join(__dirname, 'app', 'etc'), block('mageetc'))
   console.log (xml('content', { target: [ community, design, etc ] }))
 
 })
