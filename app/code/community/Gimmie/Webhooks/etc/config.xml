@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Gimmie_Webhooks>
+      <version>1.0.0</version>
+    </Gimmie_Webhooks>
+  </modules>
+
+  <global>
+
+    <events>
+
+      <controller_action_layout_generate_blocks_after>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>injectScripts</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </controller_action_layout_generate_blocks_after>
+
+      <customer_register_success>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchRegisterSuccess</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </customer_register_success>
+
+    </events>
+
+    <models>
+      <Gimmie_Webhooks>
+        <class>Gimmie_Webhooks_Model</class>
+      </Gimmie_Webhooks>
+    </models>
+
+  </global>
+</config>

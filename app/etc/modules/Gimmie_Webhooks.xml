@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <modules>
+    <Gimmie_Webhooks>
+      <active>true</active>
+      <codePool>community</codePool>
+    </Gimmie_Webhooks>
+  </modules>
+</config>
