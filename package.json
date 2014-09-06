@@ -11,8 +11,9 @@
   "dependencies": {
     "fstream": "^1.0.2",
     "gulp": "^3.8.7",
-    "js2xmlparser": "^0.1.4",
     "lodash": "^2.4.1",
-    "tar": "^1.0.1"
+    "moment": "^2.8.3",
+    "tar": "^1.0.1",
+    "xmlbuilder": "^2.4.3"
   }
 }
