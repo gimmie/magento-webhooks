@@ -1,29 +1,50 @@
-# Magento for Gimmie SaaS
+# Webhooks for Magento
 
-- Embed Gimmie Widget scripts on page
-- Trigger events on Gimmie SaaS
-- Redirect user to Gimmie SaaS panel when click on link in Admin
-- No local settings that user can change
-- Have a config file generate from SaaS service
+This plugin is provided an easier way to install 3rd party apps to Magento site. 
 
-## Events
+## Event hooks for app developer
 
 - Register
 - Login
 - View item
 - Purchases item
 
-## Flow
+## Installation
 
-- Site owner visit Gimmie/Magento Connect plugin page
-- Click on install Magento Plugin
-- Redirect to Gimmie SaaS page to register and get Magento plugin link
-- Copy/Download Magento plugin and Install with Admin page
-- Go back to Magento Admin and see __Gimmie__ link in Admin navigation
-- Click on navigation redirect to Gimmie SaaS settings page
+- `USER` visit Magento Connect plugin page
+- Click on install Magento Plugin and grab installation link
+- Install `PLUGIN` by plugins installation page in `SITE` with link from Magento Connect site
+- Go back to `SITE` admin page and click on `PLUGIN` admin link
+- Click on `APP` icon or put `APP` url and click `connect?`
+- Redirect to `APP` page to register and link `SITE` to `APP`
+- Set configuration on `APP` and done
 
-## Notes
+Glossary from #2
+__USER__ is Magento site owner
+__PLUGIN__ is this plugin
+__SITE__ is Magento site
+__APP__ is internet app e.g. Gimmie App.
 
-- All events will trigger to Gimmie, no settings for disable this in Magento side
-- Key and Secret embed in file/code. (This will generate by script some where.)
-- No settings to disable components. Don't want to use it, disable or uninstall.
+## License
+
+The MIT License
+
+Copyright (c) 2010-2014 Gimmieworld pte ltd. https://www.gimmie.io
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
