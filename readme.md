@@ -19,7 +19,7 @@ This plugin is provided an easier way to install 3rd party apps to Magento site.
 - Redirect to `APP` page to register and link `SITE` to `APP`
 - Set configuration on `APP` and done
 
-Glossary from #2
+Glossary from [#2](https://github.com/gimmie/magento-webhooks/issues/2)
 __USER__ is Magento site owner
 __PLUGIN__ is this plugin
 __SITE__ is Magento site
