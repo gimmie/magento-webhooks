@@ -48,4 +48,17 @@
     </resources>
 
   </global>
+
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <gimmie_webhooks after="Mage_Adminhtml">Gimmie_Webhooks_Adminhtml</gimmie_webhooks>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>
+
 </config>
