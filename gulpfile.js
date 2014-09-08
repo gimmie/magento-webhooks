@@ -1,4 +1,6 @@
 var gulp = require('gulp')
+  , fstream = require('fstream')
+  , tar = require('tar')
   , zlib = require('zlib')
   , crypto = require('crypto')
   , fs = require('fs')
@@ -12,8 +14,7 @@ var multiline = function (fn) {
   return fn.toString().replace(/(^function\s*\(\)\s+{\s+\/\*)|(\s*\*\/\;*\s*})/g, '')
 }
 
-gulp.task('build', function () {
-
+gulp.task('generate:package', function() {
   var buildTree = function (dir, tree) {
     var base = fs.readdirSync(dir)
 
@@ -84,7 +85,26 @@ Other multiline here
     }
   }
   fs.writeFileSync('package.xml', xml.create('package').ele(meta).end({ pretty: true }))
-
 })
 
-gulp.task('default', [ 'build' ])
+gulp.task('archive', [ 'generate:package' ], function () {
+
+  var packageFile = 'gimmie.tgz'
+  var ignores = _([ 'node_modules', '.git', '.gitignore', 'package.json', 'gulpfile.js', packageFile ])
+    .inject(function(r, v) {
+      r[v] = true
+      return r
+    }, {})
+
+  fstream.Reader({ 
+    path: __dirname, 
+    root: './',
+    filter: function(fstream, file) {
+      return !ignores[file.basename]
+    }
+  }).pipe(tar.Pack())
+    .pipe(zlib.Gzip())
+    .pipe(fstream.Writer({ 'path': packageFile }))
+})
+
+gulp.task('default', [ 'archive' ])
