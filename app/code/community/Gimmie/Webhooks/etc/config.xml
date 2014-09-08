@@ -38,5 +38,14 @@
       </Gimmie_Webhooks>
     </models>
 
+    <resources>
+      <webhooks_setup>
+        <setup>
+          <module>Gimmie_Webhooks</module>
+          <class>Gimmie_Webhooks_Model_Resource_Setup</class>
+        </setup>
+      </webhooks_setup>
+    </resources>
+
   </global>
 </config>

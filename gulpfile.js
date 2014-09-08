@@ -105,6 +105,7 @@ gulp.task('archive', [ 'generate:package' ], function () {
   }).pipe(tar.Pack())
     .pipe(zlib.Gzip())
     .pipe(fstream.Writer({ 'path': packageFile }))
+
 })
 
 gulp.task('default', [ 'archive' ])
