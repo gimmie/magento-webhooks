@@ -9,11 +9,6 @@
           <title>Add application</title>
           <action>adminhtml/webhooks</action>
         </add_app>
-        
-        <allow_app module="gimmie_webhooks">
-          <title>Allow application</title>
-          <action>adminhtml/webhooks/oauth</action>
-        </allow_app>
       </children>
     </gimmie>
   </menu>

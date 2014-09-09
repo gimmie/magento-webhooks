@@ -16,12 +16,13 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
   }
 
   public function redirectToAppAction() {
-    $this->loadLayout();
-    $this->_setActiveMenu('gimmie/webhooks');
-    $this->renderLayout();
+    $appUrl = $this->getRequest()->getParams()["app"];
+    $allowUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
+
+    $this->_redirectUrl("$appUrl?site=$allowUrl");
   }
 
-  public function oauthAction() {
+  public function allowAction() {
     $this->loadLayout();
     $this->_setActiveMenu('gimmie/webhooks');
 
