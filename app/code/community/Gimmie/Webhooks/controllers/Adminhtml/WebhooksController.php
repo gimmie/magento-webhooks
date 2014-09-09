@@ -36,6 +36,10 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $this->renderLayout();
   }
 
+  public function addAppAction() {
+    echo "Grant";
+  }
+
   protected function _isAllowed() {
     return Mage::getSingleton('admin/session')->isAllowed('gimmie');
   }

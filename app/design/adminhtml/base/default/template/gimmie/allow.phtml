@@ -8,13 +8,13 @@
 
         <div class="panel panel-default">
 
-          <div class="panel-heading"><h3 class="panel-title">Allow [URL] run on this site?</h3></div>
+          <div class="panel-heading"><h3 class="panel-title">Allow [APP] run on this site?</h3></div>
           <div class="panel-body">
 
-            <form class="form-inline">
+            <form class="form-inline" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/addApp"); ?>">
 
-              <button class="btn btn-primary">Allow</button>
-              <button class="btn btn-danger">Cancel</button>
+              <button type="submit" class="btn btn-primary">Allow</button>
+              <a class="btn btn-danger" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks"); ?>">Cancel</a>
 
             </form>
 
