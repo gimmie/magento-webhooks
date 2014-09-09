@@ -60,7 +60,7 @@
       <adminhtml>
         <args>
           <modules>
-            <gimmie_webhooks after="Mage_Adminhtml">Gimmie_Webhooks_Adminhtml</gimmie_webhooks>
+            <Gimmie_Webhooks after="Mage_Adminhtml">Gimmie_Webhooks_Adminhtml</Gimmie_Webhooks>
           </modules>
         </args>
       </adminhtml>

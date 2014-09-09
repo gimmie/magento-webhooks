@@ -7,7 +7,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
   }
 
   protected function _isAllowed() {
-    return Mage::getSingleton('admin/session')->isAllowed('turnkeye/form');
+    return Mage::getSingleton('admin/session')->isAllowed('gimmie');
   }
 
 }

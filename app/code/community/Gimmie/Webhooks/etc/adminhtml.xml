@@ -2,16 +2,9 @@
 <config>
   <menu>
     <gimmie translate="title" module="gimmie_webhooks">
-      <!-- TODO: Temporary calls it hooks for now -->
-      <title>Hooks</title>
+      <title>Webhooks</title>
       <sort_order>100</sort_order>
-      <children>
-        <form translate="title" module="gimmie_webhooks">
-          <title>Hooks</title>
-          <sort_order>10</sort_order>
-          <action>adminhtml/hooksform</action>
-        </form>
-      </children>
+      <action>adminhtml/webhooks</action>
     </gimmie>
   </menu>
 
@@ -25,12 +18,6 @@
           <gimmie>
             <title>Webhooks</title>
             <sort_order>1</sort_order>
-            <children>
-              <form>
-                <title>Form</title>
-                <sort_order>1</sort_order>
-              </form>
-            </children>
           </gimmie>
         </children>
       </admin>
