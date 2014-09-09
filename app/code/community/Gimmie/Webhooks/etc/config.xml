@@ -55,6 +55,18 @@
 
   </global>
 
+  <frontend>
+    <routers>
+      <webhooks>
+        <use>standard</use>
+        <args>
+          <module>Gimmie_Webhooks</module>
+          <frontName>webhooks</frontName>
+        </args>
+      </webhooks>
+    </routers>
+  </frontend>
+
   <admin>
     <routers>
       <adminhtml>
