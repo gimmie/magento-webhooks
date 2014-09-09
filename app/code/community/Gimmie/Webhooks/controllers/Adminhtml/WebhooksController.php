@@ -3,6 +3,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
 
   public function indexAction() {
     $this->loadLayout();
+    $this->_setActiveMenu('gimmie/webhooks');
     $this->renderLayout();
   }
 
