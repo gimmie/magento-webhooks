@@ -1,6 +1,11 @@
 <?php
 class Gimmie_Webhooks_Model_Hooks {
 
+  /**
+   * Query all apps in database and get header block from app too
+   * append to head block
+   *
+   */
   public function injectScripts(Varien_Event_Observer $observer = null) {
     $layout = $observer->getEvent()->getLayout();
     $block = $layout->createBlock(
@@ -11,6 +16,8 @@ class Gimmie_Webhooks_Model_Hooks {
 
     $head = $layout->getBlock("head");
     $head->append($block);
+
+
   }
 
   public function dispatchRegisterSuccess(Varien_Event_Observer $observer = null) {
