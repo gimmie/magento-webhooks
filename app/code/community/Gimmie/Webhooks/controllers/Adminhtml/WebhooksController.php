@@ -19,7 +19,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $appUrl = $this->getRequest()->getParams()["app"];
     $allowUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
 
-    $this->_redirectUrl("$appUrl?site=$allowUrl");
+    $this->_redirectUrl("$appUrl?magento=$allowUrl");
   }
 
   public function allowAction() {
