@@ -26,11 +26,25 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $this->loadLayout();
     $this->_setActiveMenu('gimmie/webhooks');
 
+    $key = $this->getRequest()->getParams()["key"];
+    // Query app from key
+    $app = array(
+      "domain" => "gimmie.io",
+      "title" => "Loyalty app for your ecommerce site",
+      "description" => "Long long text field in database",
+      "logo" => "http://placehold.it/350x150&text=My+App",
+      "events" => array(
+        "register" => "http://gimmie.io/trigger/register",
+        "login" => "http://gimmie.io/trigger/login"
+      ),
+      "scripts" => array("http://gimmie.io/embed/1.js", "http://gimmie.io/embed/2.js")
+    );
+
     $block = $this->getLayout()->createBlock(
       "Mage_Core_Block_Template",
       "webhooks_admin",
       array("template" => "gimmie/allow.phtml")
-    );
+    )->setData('app', $app);
     $this->_addContent($block);
 
     $this->renderLayout();

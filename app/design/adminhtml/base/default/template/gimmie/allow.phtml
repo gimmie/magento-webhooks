@@ -8,10 +8,23 @@
 
         <div class="panel panel-default">
 
-          <div class="panel-heading"><h3 class="panel-title">Allow [APP] run on this site?</h3></div>
+          <div class="panel-heading"><h3 class="panel-title">Allow <?php echo $this->app["domain"] ?> run on this site?</h3></div>
           <div class="panel-body">
 
             <form class="form-inline" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/addApp"); ?>">
+
+              <p>This application uses this events</p>
+              <ul>
+              <?php foreach ( $this->app["events"] as $hook=>$url ) { ?>
+                <li><?php echo $hook; ?></li>
+              <?php } ?>
+              </ul>
+              <p>and embeds these script to your site</p>
+              <ul>
+              <?php foreach ( $this->app["scripts"] as $key=>$script ) { ?>
+                <li><?php echo $script ?></li>
+              <?php } ?>
+              </ul>
 
               <button type="submit" class="btn btn-primary">Allow</button>
               <a class="btn btn-danger" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks"); ?>">Cancel</a>
