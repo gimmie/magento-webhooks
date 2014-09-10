@@ -1,6 +1,9 @@
 <?php
 class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
-
+  public function getJsonData(){
+     return json_decode(file_get_contents('php://input'), true);
+  }
+  
   public function registerAction() {
     $params = $this->getRequest()->getParams();
 
@@ -13,7 +16,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     }
 
     $secretUrl = $params["secret_url"];
-    $value = json_decode(file_get_contents('php://input'), true);
+    $value = $this->getJsonData();
 
     $matches = array();
     preg_match('/key\/([0-9a-f]+)\//', $secretUrl, $matches);
