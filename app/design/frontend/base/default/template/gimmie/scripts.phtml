@@ -1,0 +1,9 @@
+<!-- Webhooks scripts -->
+<?php
+foreach (json_decode($this->scripts) as $script) {
+?>
+  <script type="text/javascript" src="<?php echo $script ?>"></script>
+<?php
+}
+?>
+<!-- /Webhooks scripts -->
