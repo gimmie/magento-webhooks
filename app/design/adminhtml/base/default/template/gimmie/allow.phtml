@@ -15,15 +15,25 @@
 
               <p>This application uses this events</p>
               <ul>
-              <?php foreach ( $this->app["events"] as $hook=>$url ) { ?>
+              <?php
+              $events = json_decode($this->app["events"], true);
+              foreach ( $events as $hook=>$url ) { 
+              ?>
                 <li><?php echo $hook; ?></li>
-              <?php } ?>
+              <?php 
+              } 
+              ?>
               </ul>
               <p>and embeds these script to your site</p>
               <ul>
-              <?php foreach ( $this->app["scripts"] as $key=>$script ) { ?>
+              <?php 
+              $scripts = json_decode($this->app["scripts"], true);
+              foreach ( $scripts as $key=>$script ) { 
+              ?>
                 <li><?php echo $script ?></li>
-              <?php } ?>
+              <?php 
+              } 
+              ?>
               </ul>
 
               <a class="btn btn-primary" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/grantAppInstall"); ?>">YES</a>

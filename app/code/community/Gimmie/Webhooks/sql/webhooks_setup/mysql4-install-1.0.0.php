@@ -11,7 +11,7 @@ CREATE TABLE `{$this->getTable('webhooks_application')}` (
   `description` text NOT NULL,
   `title` text NOT NULL,
   `logo` text NOT NULL,
-  `key` text NOT NULL,
+  `secret` text NOT NULL,
   `scripts` text NOT NULL,
   `events` text NOT NULL,
   `enable` Bool NOT NULL DEFAULT FALSE,

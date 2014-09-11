@@ -28,7 +28,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $application->setLogo($value['app']['logo']);
     $application->setEvents(json_encode($value['events']));
     $application->setScripts(json_encode($value['scripts']));
-    $application->setKey($key);
+    $application->setSecret($key);
     $application->save();
 
     $this->getResponse()->setHeader('Content-type', 'application/json');
