@@ -33,9 +33,18 @@
     </events>
 
     <models>
-      <Gimmie_Webhooks>
+      <webhooks>
         <class>Gimmie_Webhooks_Model</class>
-      </Gimmie_Webhooks>
+        <resourceModel>webhooks_resource</resourceModel>
+      </webhooks>
+      <webhooks_resouces>
+        <class>Gimmie_Webhooks_Model_Resource</class>
+        <entities>
+          <application>
+            <table>webhooks_application</table>
+          </application>
+        </entities>
+      </webhooks_resouces>
     </models>
 
     <resources>
