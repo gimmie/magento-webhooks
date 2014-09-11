@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS `{$this->getTable('webhooks_application')}`;
 CREATE TABLE `{$this->getTable('webhooks_application')}` (
   `application_id` int(11) unsigned NOT NULL auto_increment,
   `domain` text NOT NULL,
-  `url` text NOT NULL,
   `description` text NOT NULL,
   `title` text NOT NULL,
   `logo` text NOT NULL,
