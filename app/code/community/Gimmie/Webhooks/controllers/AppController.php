@@ -5,8 +5,10 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $params = $this->getRequest()->getParams();
 
     if (!array_key_exists('secret_url', $params)) {
-      $this->getResponse()->setHeader('HTTP/1.1', '404 Not Found');
-      $this->getResponse()->setHeader('Status', '404 File not found');
+      $this->getResponse()->setHeader('Content-type', 'application/json');
+      $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+        "success" => false 
+      )));
       return;
     }
 
