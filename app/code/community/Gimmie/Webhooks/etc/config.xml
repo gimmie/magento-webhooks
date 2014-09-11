@@ -30,6 +30,36 @@
         </observers>
       </customer_register_success>
 
+      <customer_login>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchLoginSuccess</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </customer_login>
+
+      <catalog_controller_product_view>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchViewItem</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </catalog_controller_product_view>
+
+      <sales_order_payment_pay>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchPurchaseItem</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </sales_order_payment_pay>
+
     </events>
 
     <models>

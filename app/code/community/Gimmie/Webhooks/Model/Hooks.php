@@ -10,8 +10,7 @@ class Gimmie_Webhooks_Model_Hooks {
     $layout = $observer->getEvent()->getLayout();
     $head = $layout->getBlock("head");
 
-    $applications = Mage::getModel('webhooks/application')->getCollection();
-    $applications->addFilter('enable', true);
+    $applications = $this->getEnabledApps();
     foreach($applications as $application) {
       $scripts = $application->getScripts();
       $block = $layout->createBlock(
@@ -24,15 +23,29 @@ class Gimmie_Webhooks_Model_Hooks {
   }
 
   public function dispatchRegisterSuccess(Varien_Event_Observer $observer = null) {
+    Mage::log(print_r($observer->getCustomer(), true));
+    Mage::log(print_r(Mage::getSingleton('customer/session')));
   }
 
   public function dispatchLoginSuccess(Varien_Event_Observer $observer = null) {
+    Mage::log(print_r($observer->getCustomer(), true));
+    Mage::log(print_r(Mage::getSingleton('customer/session')));
   }
 
   public function dispatchViewItem(Varien_Event_Observer $observer = null) {
+    Mage::log(print_r($observer->getCustomer(), true));
+    Mage::log(print_r(Mage::getSingleton('customer/session')));
   }
 
   public function dispatchPurchaseItem(Varien_Event_Observer $observer = null) {
+    Mage::log(print_r($observer->getCustomer(), true));
+    Mage::log(print_r(Mage::getSingleton('customer/session')));
+  }
+
+  private function getEnabledApps() {
+    $applications = Mage::getModel('webhooks/application')->getCollection();
+    $applications->addFilter('enable', true);
+    return $applications;
   }
 
 }
