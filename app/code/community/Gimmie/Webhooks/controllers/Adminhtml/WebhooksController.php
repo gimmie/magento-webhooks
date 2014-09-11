@@ -44,22 +44,26 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
    * Authorize app page on step 12) in #2
    */
   public function allowAction() {
-    $this->loadLayout();
-    $this->_setActiveMenu('gimmie/webhooks');
-
     $key = $this->getRequest()->getParams()["key"];
     
     // Query app from key
     $applications = Mage::getModel('webhooks/application')->getCollection();
     $applications->addFilter('secret', $key);
-    $application = $applications->getFirstItem()->getData();
 
-    // If app is not found, redirect back to add application page.
+    // TODO: If app is not found, redirect back to add application page.
+    $application = $applications->getFirstItem();
+
+    $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+    $session->setData('app', $application);
+    
+    $this->loadLayout();
+    $this->_setActiveMenu('gimmie/webhooks');
+
     $block = $this->getLayout()->createBlock(
       "Mage_Core_Block_Template",
       "webhooks_admin",
       array("template" => "gimmie/allow.phtml")
-    )->setData('app', $application);
+    )->setData('app', $application->getData());
     $this->_addContent($block);
 
     $this->renderLayout();
@@ -75,6 +79,8 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
 
     $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
     $appUrl = $session->getData("appUrl");
+    $app = $session->getData('app');
+    $app->delete();
 
     $this->_redirectUrl("$appUrl?magentosuccess=0&magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
   }
@@ -88,6 +94,9 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
 
     $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
     $appUrl = $session->getData("appUrl");
+    $app = $session->getData('app');
+    $app->setEnable(true);
+    $app->save();
 
     $this->_redirectUrl("$appUrl?magentosuccess=1");
   }
