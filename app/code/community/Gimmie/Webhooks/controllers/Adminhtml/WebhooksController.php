@@ -1,6 +1,15 @@
 <?php
+/**
+ * Register application controller from #2
+ *
+ */
 class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Controller_Action {
 
+  /**
+   * App listing page and input field to submit url
+   * to install new app.
+   *
+   */
   public function indexAction() {
     $this->loadLayout();
     $this->_setActiveMenu('gimmie/webhooks');
@@ -15,13 +24,22 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $this->renderLayout();
   }
 
+  /**
+   * Redirect user to app action on step 5) in #2
+   *
+   */
   public function redirectToAppAction() {
     $appUrl = $this->getRequest()->getParams()["app"];
-    $allowUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
 
-    $this->_redirectUrl("$appUrl?magento=$allowUrl");
+    $returnUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
+    $registerAppUrl = urlencode(Mage::getUrl('webhooks/app/register'));
+
+    $this->_redirectUrl("$appUrl?magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
   }
 
+  /**
+   * Authorize app page on step 12) in #2
+   */
   public function allowAction() {
     $this->loadLayout();
     $this->_setActiveMenu('gimmie/webhooks');
