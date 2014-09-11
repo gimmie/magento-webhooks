@@ -23,23 +23,50 @@ class Gimmie_Webhooks_Model_Hooks {
   }
 
   public function dispatchRegisterSuccess(Varien_Event_Observer $observer = null) {
-    Mage::log(print_r($observer->getCustomer(), true));
-    Mage::log(print_r(Mage::getSingleton('customer/session')));
+    $data = $this->getBaseData($observer);
+    Mage::log("JSON: ".json_encode($data));
   }
 
   public function dispatchLoginSuccess(Varien_Event_Observer $observer = null) {
-    Mage::log(print_r($observer->getCustomer(), true));
-    Mage::log(print_r(Mage::getSingleton('customer/session')));
+    $data = $this->getBaseData($observer);
+    Mage::log("JSON: ".json_encode($data));
   }
 
   public function dispatchViewItem(Varien_Event_Observer $observer = null) {
-    Mage::log(print_r($observer->getCustomer(), true));
-    Mage::log(print_r(Mage::getSingleton('customer/session')));
+    $data = $this->getBaseData($observer);
+    Mage::log("JSON: ".json_encode($data));
   }
 
   public function dispatchPurchaseItem(Varien_Event_Observer $observer = null) {
+    $this->debug($observer);
+  }
+
+  private function getBaseData($observer) {
+    $session = Mage::getSingleton('customer/session');
+    $base = array( "session" => $session->getSessionId() );
+
+    if ($session->isLoggedIn()) {
+      $customer = $session->getCustomer();
+      $user = array(
+        "id" => $customer->getId(),
+        "name" => $customer->getName(),
+        "email" => $customer["email"]
+      );
+      $base["user"] = $user;
+    }
+    return $base;
+  }
+
+  private function debug($observer) {
     Mage::log(print_r($observer->getCustomer(), true));
-    Mage::log(print_r(Mage::getSingleton('customer/session')));
+
+    $session = Mage::getSingleton('customer/session');
+    Mage::log($session->getSessionId());
+
+    if ($session->isLoggedIn()) {
+      $customer = $session->getCustomer();
+      Mage::log(print_r($customer, true));
+    }
   }
 
   private function getEnabledApps() {
