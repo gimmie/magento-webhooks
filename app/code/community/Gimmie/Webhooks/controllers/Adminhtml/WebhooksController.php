@@ -82,6 +82,9 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $app = $session->getData('app');
     $app->delete();
 
+    $session->unsetData('app');
+    $session->unsetData('appUrl');
+
     $this->_redirectUrl("$appUrl?magentosuccess=0&magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
   }
 
@@ -89,14 +92,14 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
    * User grant installing app on 14) in #2
    */
   public function grantAppInstallAction() {
-    // Enable app in database
-
-
     $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
     $appUrl = $session->getData("appUrl");
     $app = $session->getData('app');
     $app->setEnable(true);
     $app->save();
+
+    $session->unsetData('app');
+    $session->unsetData('appUrl');
 
     $this->_redirectUrl("$appUrl?magentosuccess=1");
   }
