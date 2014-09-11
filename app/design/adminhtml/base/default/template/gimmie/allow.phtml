@@ -11,7 +11,7 @@
           <div class="panel-heading"><h3 class="panel-title">Allow <?php echo $this->app["domain"] ?> run on this site?</h3></div>
           <div class="panel-body">
 
-            <form class="form-inline" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/addApp"); ?>">
+            <form class="form-inline">
 
               <p>This application uses this events</p>
               <ul>
@@ -26,8 +26,8 @@
               <?php } ?>
               </ul>
 
-              <button type="submit" class="btn btn-primary">Allow</button>
-              <a class="btn btn-danger" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/deniedAppInstall"); ?>">Cancel</a>
+              <a class="btn btn-primary" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/grantAppInstall"); ?>">YES</a>
+              <a class="btn btn-danger" href="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/deniedAppInstall"); ?>">NO</a>
 
             </form>
 

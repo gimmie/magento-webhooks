@@ -92,6 +92,13 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
    * User grant installing app on 14) in #2
    */
   public function grantAppInstallAction() {
+    // Enable app in database
+
+
+    $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+    $appUrl = $session->getData("appUrl");
+
+    $this->_redirectUrl("$appUrl?magentosuccess=1");
   }
 
   protected function _isAllowed() {
