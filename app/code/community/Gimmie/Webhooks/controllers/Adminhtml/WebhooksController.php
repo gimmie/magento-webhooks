@@ -34,6 +34,9 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $returnUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
     $registerAppUrl = urlencode(Mage::getUrl('webhooks/app/register'));
 
+    $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+    $session->setData("appUrl", $appUrl);
+
     $this->_redirectUrl("$appUrl?magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
   }
 
@@ -55,8 +58,11 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
         "register" => "http://gimmie.io/trigger/register",
         "login" => "http://gimmie.io/trigger/login"
       ),
-      "scripts" => array("http://gimmie.io/embed/1.js", "http://gimmie.io/embed/2.js")
+      "scripts" => array("http://gimmie.io/embed/1.js", "http://gimmie.io/embed/2.js"),
+      "enable" => false
     );
+
+    // If app is not found, redirect back to add application page.
 
     $block = $this->getLayout()->createBlock(
       "Mage_Core_Block_Template",
@@ -68,8 +74,24 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $this->renderLayout();
   }
 
-  public function addAppAction() {
-    echo "Grant";
+  /**
+   * User denied installing app on 13) in #2
+   *
+   */
+  public function deniedAppInstallAction() {
+    $returnUrl = urlencode(Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/allow"));
+    $registerAppUrl = urlencode(Mage::getUrl('webhooks/app/register'));
+
+    $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
+    $appUrl = $session->getData("appUrl");
+
+    $this->_redirectUrl("$appUrl?magentosuccess=0&magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
+  }
+
+  /**
+   * User grant installing app on 14) in #2
+   */
+  public function grantAppInstallAction() {
   }
 
   protected function _isAllowed() {
