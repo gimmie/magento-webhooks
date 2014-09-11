@@ -2,19 +2,33 @@
 class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
 
   public function registerAction() {
-    $appUrl = $this->getRequest()->getParams()["secret_url"];
-    $value = json_decode(file_get_contents('php://input'));
+    $params = $this->getRequest()->getParams();
 
-    // Secret Url - http://magento.llun.in/index.php/admin/webhooks/allow/key/5d2e72d06eb11266457188c2c6f9fcd4/
-    // Value from #6 - {
-    //    app: {
-    //    },
-    //    events: {
-    //    },
-    //    scripts: []
-    // }
-    // Extract key from the url and put to database with value, if success return json in #6
-    //
+    if (!array_key_exists('secret_url', $params)) {
+      $this->getResponse()->setHeader('HTTP/1.1', '404 Not Found');
+      $this->getResponse()->setHeader('Status', '404 File not found');
+      return;
+    }
+
+    $secretUrl = $params["secret_url"];
+    $value = json_decode(file_get_contents('php://input'), true);
+
+    $matches = array();
+    preg_match('/key\/([0-9a-f]+)\//', $secretUrl, $matches);
+
+    $key = $matches[1];
+
+    // TODO: If key or domain is already exists, what to do next?
+    $application = Mage::getModel('webhooks/application');
+    $application->setDomain($value['app']['domain']);
+    $application->setTitle($value['app']['title']);
+    $application->setDescription($value['app']['description']);
+    $application->setLogo($value['app']['logo']);
+    $application->setEvents(json_encode($value['events']));
+    $application->setScripts(json_encode($value['scripts']));
+    $application->setKey($key);
+    $application->save();
+
     $this->getResponse()->setHeader('Content-type', 'application/json');
     $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
       "success" => true

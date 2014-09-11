@@ -21,10 +21,6 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     );
     $this->_addContent($block);
 
-    $model = Mage::getModel('webhooks/application');
-    $model->load('1');
-    Mage::log(print_r($model->getData(), 1));
-
     $this->renderLayout();
   }
 
