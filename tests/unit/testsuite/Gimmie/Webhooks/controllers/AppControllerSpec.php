@@ -1,13 +1,26 @@
 <?php
 require_once('code/community/Gimmie/Webhooks/controllers/AppController.php');
 class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
+  private $header;
+  private $body;
+
   public function setUp()
   {
     $this->controller = $this ->getMock('Gimmie_Webhooks_AppController', array('getRequest', 'getResponse', 'saveApplication', 'getJsonData'));
 
-    $res = new Mage_Core_Controller_Response_Http; 
+    $res = $this->getMock('Mage_Core_Controller_Response_Http', array('setHeader', 'setBody')); 
+    $res->expects($this->once())->method('setHeader')
+      ->will($this->returnCallback(function($key, $value){
+        $this->header = array($key, $value);
+      }));
+    $res->expects($this->once())->method('setBody')
+      ->will($this->returnCallback(function($body){
+        $this->body = $body;
+      }));
+
     $this->controller->expects($this->any())->method('getResponse')
       ->will($this->returnValue($res));
+
     $this->controller->expects($this->any())->method('saveApplication')
       ->will($this->returnValue("Saved"));
   }
@@ -45,7 +58,7 @@ class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
     $params = Array('secret_url'=>'SECRET');
     $this->setRequestParams($params);
     $this->controller->registerAction();
-//    assert "success"=>"true" 
+    $this->assertEquals($this->body, Mage::helper('core')->jsonEncode(array("success"=> true)));
   }
 }
 ?>
