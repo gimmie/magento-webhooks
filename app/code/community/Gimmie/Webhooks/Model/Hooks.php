@@ -10,7 +10,7 @@ class Gimmie_Webhooks_Model_Hooks {
     $layout = $observer->getEvent()->getLayout();
     $head = $layout->getBlock("head");
 
-    $applications = $this->getEnabledApps();
+    $applications = $this->_getEnabledApps();
     foreach($applications as $application) {
       $scripts = $application->getScripts();
       $block = $layout->createBlock(
@@ -23,25 +23,69 @@ class Gimmie_Webhooks_Model_Hooks {
   }
 
   public function dispatchRegisterSuccess(Varien_Event_Observer $observer = null) {
-    $data = $this->getBaseData($observer);
-    Mage::log("JSON: ".json_encode($data));
+    $urls = $this->_getEventUrls('register');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $data = $this->_getBaseData($observer);
+    foreach($urls as $url) {
+      $this->_sendData($url, $data);
+    }
   }
 
   public function dispatchLoginSuccess(Varien_Event_Observer $observer = null) {
-    $data = $this->getBaseData($observer);
-    Mage::log("JSON: ".json_encode($data));
+    $urls = $this->_getEventUrls('login');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $data = $this->_getBaseData($observer);
+    foreach($urls as $url) {
+      $this->_sendData($url, $data);
+    }
   }
 
   public function dispatchViewItem(Varien_Event_Observer $observer = null) {
-    $data = $this->getBaseData($observer);
-    Mage::log("JSON: ".json_encode($data));
+    $urls = $this->_getEventUrls('viewItem');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $product = $observer->getEvent()->getProduct();
+    $data = $this->_getBaseData($observer);
+    $data["product"] = array(
+      "id" => $product->getId(),
+      "name" => $product->getName(),
+      "url" => $product->getProductUrl(),
+      "price" => $product->getPrice(),
+      "created_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getCreatedAt()),
+      "updated_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getUpdatedAt()),
+      "isSaleable" => $product->isSaleable(),
+      "isInStock" => $product->isInStock()
+    );
+
+    foreach($urls as $url) {
+      $this->_sendData($url, $data);
+    }
   }
 
   public function dispatchPurchaseItem(Varien_Event_Observer $observer = null) {
-    $this->debug($observer);
+    $urls = $this->_getEventUrls('purchaseItem');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $product = $observer->getEvent()->getProduct();
+    Mage::log(print_r($observer->getEvent(), true));
+
+    $data = $this->_getBaseData($observer);
+    foreach($urls as $url) {
+      $this->_sendData($url, $data);
+    }
   }
 
-  private function getBaseData($observer) {
+  private function _getBaseData($observer) {
     $session = Mage::getSingleton('customer/session');
     $base = array( "session" => $session->getSessionId() );
 
@@ -57,22 +101,39 @@ class Gimmie_Webhooks_Model_Hooks {
     return $base;
   }
 
-  private function debug($observer) {
-    Mage::log(print_r($observer->getCustomer(), true));
+  private function _sendData($url, $jsonArray) {
+    Mage::log("Send to $url with ".print_r($jsonArray, true));
 
-    $session = Mage::getSingleton('customer/session');
-    Mage::log($session->getSessionId());
+    $jsonString = json_encode($jsonArray);
 
-    if ($session->isLoggedIn()) {
-      $customer = $session->getCustomer();
-      Mage::log(print_r($customer, true));
-    }
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Content-Type: application/json',
+      'Content-Length: '.strlen($jsonString)
+    ));
+    curl_exec($ch);
+    curl_close($ch);
   }
 
-  private function getEnabledApps() {
+  private function _getEnabledApps() {
     $applications = Mage::getModel('webhooks/application')->getCollection();
     $applications->addFilter('enable', true);
     return $applications;
+  }
+
+  private function _getEventUrls($name) {
+    $urls = array();
+    $applications = $this->_getEnabledApps();
+    foreach($applications as $application) {
+      $events = json_decode($application->getEvents(), true);
+      if (array_key_exists($name, $events)) {
+        array_push($urls, $events[$name]);
+      }
+    }
+    return $urls;
   }
 
 }
