@@ -3,22 +3,30 @@ require_once('code/community/Gimmie/Webhooks/controllers/AppController.php');
 class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
   public function setUp()
   {
-    $this->controller = $this ->getMock('Gimmie_Webhooks_AppController', array('getRequest', 'getResponse', 'getJsonData'));
+    $this->controller = $this ->getMock('Gimmie_Webhooks_AppController', array('getRequest', 'getResponse', 'saveApplication', 'getJsonData'));
 
-    $req= new Mage_Core_Controller_Request_Http; 
-    $req->setParams(Array('secret_url'=>'SECRET'));
-    $this->controller->expects($this->any())->method('getRequest')
-      ->will($this->returnValue($req));
-
-    
-    $res = $this->getMock('Mage_Core_Controller_Response_Http', array('setHeader', 'setBody'));
+    $res = new Mage_Core_Controller_Response_Http; 
     $this->controller->expects($this->any())->method('getResponse')
       ->will($this->returnValue($res));
+    $this->controller->expects($this->any())->method('saveApplication')
+      ->will($this->returnValue("Saved"));
   }
   
-  public function setValidFixture(){
+  public function setJSONDataFixture($json){
+    $this->controller->expects($this->any())->method('getJsonData')
+      ->will($this->returnValue(json_decode($json, true)));
+  }
+
+  public function setRequestParams($params){
+    $req= new Mage_Core_Controller_Request_Http; 
+    $req->setParams($params);
+    $this->controller->expects($this->any())->method('getRequest')
+      ->will($this->returnValue($req));
+  }
+
+  public function testRegisterValidJson(){
     //Everything valid:
-    $json='
+    $data='
       {
         "app":{
           "domain": "myapp.com",
@@ -33,13 +41,11 @@ class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
         "scripts": [ "url" ]
       }
       ';
-    $this->controller->expects($this->any())->method('getJsonData')
-      ->will($this->returnValue(json_decode($json, true)));
-  }
-
-  public function testRegisterAction(){
-    $this->setValidFixture();
+    $this->setJSONDataFixture($data);
+    $params = Array('secret_url'=>'SECRET');
+    $this->setRequestParams($params);
     $this->controller->registerAction();
+//    assert "success"=>"true" 
   }
 }
 ?>
