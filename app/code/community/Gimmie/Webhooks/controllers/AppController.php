@@ -3,26 +3,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
   public function getJsonData(){
      return json_decode(file_get_contents('php://input'), true);
   }
-  
-  public function registerAction() {
-    $params = $this->getRequest()->getParams();
-
-    if (!array_key_exists('secret_url', $params)) {
-      $this->getResponse()->setHeader('Content-type', 'application/json');
-      $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
-        "success" => false 
-      )));
-      return;
-    }
-
-    $secretUrl = $params["secret_url"];
-    $value = $this->getJsonData();
-
-    $matches = array();
-    preg_match('/key\/([0-9a-f]+)\//', $secretUrl, $matches);
-
-    $key = $matches[1];
-
+  public function saveApplication($value){ 
     // TODO: If key or domain is already exists, what to do next?
     $application = Mage::getModel('webhooks/application');
     $application->setDomain($value['app']['domain']);
@@ -33,8 +14,39 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $application->setScripts(json_encode($value['scripts']));
     $application->setSecret($key);
     $application->save();
+  }
 
+  public function registerAction() {
     $this->getResponse()->setHeader('Content-type', 'application/json');
+    
+    $params = $this->getRequest()->getParams();
+
+    if (!array_key_exists('secret_url', $params) || $params["secret_url"] =="") {
+      $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+        "success" => false,
+        "error" => array("message" => "Missing Magento url secret keys.")
+      )));
+      return;
+    }
+
+    $secretUrl = $params["secret_url"];
+    $value = $this->getJsonData();
+    if($value==NULL){
+      $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
+        "success" => false,
+        "error" => array("message" => "POST data could not be decoded. Please make sure json is valid.")
+      )));
+      return;
+    }
+
+    $matches = array();
+    preg_match('/key\/([0-9a-f]+)\//', $secretUrl, $matches);
+    $secret = $matches[1];
+
+    $value["secret"] .= $secret;
+
+    $this->saveApplication($value);
+    
     $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
       "success" => true
     )));
