@@ -24,7 +24,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     if (!array_key_exists('secret_url', $params) || $params["secret_url"] =="") {
       $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
         "success" => false,
-        "error" => "Missing Magento url secret keys."
+        "error" => array("message" => "Missing Magento url secret keys.")
       )));
       return;
     }
@@ -34,7 +34,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     if($value==NULL){
       $this->getResponse()->setBody(Mage::helper('core')->jsonEncode(array(
         "success" => false,
-        "error" => "POST data could not be decoded. Please make sure json is valid."
+        "error" => array("message" => "POST data could not be decoded. Please make sure json is valid.")
       )));
       return;
     }

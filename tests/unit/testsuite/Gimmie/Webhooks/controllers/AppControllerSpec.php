@@ -63,35 +63,35 @@ class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
       }
       ';
     $this->setJSONDataFixture($data);
-    $params = Array('secret_url'=>'SECRET');
+    $params = Array('secret_url' => 'SECRET');
     $this->setRequestParams($params);
     $this->controller->registerAction();
-    $this->assertEquals(array("Content-type"=> "application/json"), $this->header);
-    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success"=> true)), $this->body);
+    $this->assertEquals(array("Content-type" => "application/json"), $this->header);
+    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success" => true)), $this->body);
   }
 
   public function testRegisterInvalidJson(){
     //Invalid json:
     $invalid_data = json_decode("{'app':'test'}{}", true);
     $this->setJSONDataFixture($invalid_data);
-    $params = Array('secret_url'=>'SECRET');
+    $params = Array('secret_url' => 'SECRET');
     $this->setRequestParams($params);
     $this->controller->registerAction();
-    $this->assertEquals(array("Content-type"=> "application/json"), $this->header);
-    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success"=> false,
-      "error"=> "POST data could not be decoded. Please make sure json is valid.")), $this->body);
+    $this->assertEquals(array("Content-type" => "application/json"), $this->header);
+    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success" => false,
+      "error" => array("message" => "POST data could not be decoded. Please make sure json is valid."))), $this->body);
   }
 
   public function testRegisterMissingSecret(){
     //Invalid json:
     $data = json_decode("{'app':'test'}", true);
     $this->setJSONDataFixture($data);
-    $params = Array('secret_url'=>'');
+    $params = Array('secret_url' => '');
     $this->setRequestParams($params);
     $this->controller->registerAction();
-    $this->assertEquals(array("Content-type"=> "application/json"), $this->header);
-    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success"=> false, 
-    "error"=>"Missing Magento url secret keys.")), $this->body);
+    $this->assertEquals(array("Content-type" => "application/json"), $this->header);
+    $this->assertEquals(Mage::helper('core')->jsonEncode(array("success" => false, 
+    "error" => array("message" => "Missing Magento url secret keys."))), $this->body);
   }
 }
 ?>
