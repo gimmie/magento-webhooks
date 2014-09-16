@@ -1,6 +1,6 @@
 <?php
-require_once('code/community/Gimmie/Webhooks/controllers/AppController.php');
-class Gimmie_Webhooks_AppController_Spec extends PHPUnit_Framework_Testcase{
+require_once('Gimmie/Webhooks/controllers/AppController.php');
+class Gimmie_Webhooks_AppController_Test extends PHPUnit_Framework_Testcase{
   /*
    * class variables used to store header and body that is written by controller.
    * assert the contents of response using $this->header and $this->body.

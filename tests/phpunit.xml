@@ -10,7 +10,7 @@
   syntaxCheck="true"
   bootstrap="./autoload.php">
   <testsuite name="Gimmie Webhook Unit Test">
-    <directory>testsuite</directory>
+    <directory suffix="Test.php">testsuite</directory>
   </testsuite>
   <filter>
     <whitelist>
