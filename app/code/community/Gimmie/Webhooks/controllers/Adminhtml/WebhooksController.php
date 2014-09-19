@@ -47,11 +47,14 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $key = $this->getRequest()->getParams()["key"];
     
     // Query app from key
-    $applications = Mage::getModel('webhooks/application')->getCollection();
-    $applications->addFilter('secret', $key);
-
-    // TODO: If app is not found, redirect back to add application page.
-    $application = $applications->getFirstItem();
+    try {
+      $application = Gimmie_Webhooks_Model_Application::getByKey($key);
+    } catch (Exception $e){
+      //If app is not found, redirect back to add application page.
+      $this->_redirect("/webhooks/index/key/$key", array('error' => "Failed to link the application."));
+      Mage::logException($e);
+      return;
+    }
 
     $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
     $session->setData('app', $application);

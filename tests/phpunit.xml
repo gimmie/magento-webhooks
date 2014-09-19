@@ -8,6 +8,7 @@
   processIsolation="false"
   stopOnFailure="false"
   syntaxCheck="true"
+  stderr="true"
   bootstrap="./autoload.php">
   <testsuite name="Gimmie Webhook Unit Test">
     <directory suffix="Test.php">testsuite</directory>

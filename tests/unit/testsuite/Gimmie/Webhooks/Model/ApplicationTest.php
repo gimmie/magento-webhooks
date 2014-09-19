@@ -4,8 +4,9 @@ class Gimmie_Webhooks_Model_ApplicationTest extends PHPUnit_Framework_Testcase{
   }
 
   public function testGetByKey_shouldReturnAnEmptyApplication(){
-    $app = Gimmie_Webhooks_Model_Application::getByKey("non_existent_key");
-    $this->assertEmpty($app->getData());
+    $key = "non_existent_key";
+    $this->setExpectedException('Exception', "Application with key $key does not exist.");
+    $app = Gimmie_Webhooks_Model_Application::getByKey($key);
   }
 
 }

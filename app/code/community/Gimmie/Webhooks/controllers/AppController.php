@@ -4,7 +4,8 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
      return json_decode(file_get_contents('php://input'), true);
   }
   public function saveApplication($value){ 
-    // TODO: If key or domain is already exists, what to do next?
+    // TODO: If domain is already exists, what to do next?
+    Mage::log("Saving " . $value['app']['domain']);
     $application = Mage::getModel('webhooks/application');
     $application->setDomain($value['app']['domain']);
     $application->setTitle($value['app']['title']);
@@ -12,7 +13,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $application->setLogo($value['app']['logo']);
     $application->setEvents(json_encode($value['events']));
     $application->setScripts(json_encode($value['scripts']));
-    $application->setSecret($key);
+    $application->setSecret($value['secret']);
     $application->save();
   }
 
@@ -43,7 +44,7 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     preg_match('/key\/([0-9a-f]+)\//', $secretUrl, $matches);
     $secret = $matches[1];
 
-    $value["secret"] .= $secret;
+    $value["secret"] = $secret;
 
     $this->saveApplication($value);
     
