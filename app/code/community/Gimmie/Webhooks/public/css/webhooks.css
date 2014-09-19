@@ -1,0 +1,15 @@
+.webhooks-app-list{
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+.webhooks-app-image{
+  max-width:100%;
+  max-height: 100px;
+  padding-bottom: 10px;
+}
+
+.webhooks-app{
+  padding-left: 0px;
+}
+

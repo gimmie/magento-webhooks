@@ -17,5 +17,9 @@ class Gimmie_Webhooks_Model_Application extends Mage_Core_Model_Abstract {
       return $applications->getFirstItem();
     }
   }
+
+  public static function getAllCollection(){
+    return Mage::getModel('webhooks/application')->getCollection();
+  }
 }
 ?>

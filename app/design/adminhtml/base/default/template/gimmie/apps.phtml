@@ -1,9 +1,10 @@
 <link rel="stylesheet" href="/index.php/webhooks/static/get/t/css/f/bootstrap.css">
+<link rel="stylesheet" href="/index.php/webhooks/static/get/t/css/f/webhooks.css">
 
 <div class="gm-bootstrap">
   <div class="container-fluid">
   
-    <div class="row">
+    <div class="row clearfix">
       <div class="col-xs-12 col-md-6 col-md-offset-3">
 
       <?php 
@@ -15,30 +16,44 @@
 
       <?php } ?>
 
-
+        <!--Add form-->
         <div class="panel panel-default">
-
           <div class="panel-heading"><h3 class="panel-title">Applications</h3></div>
           <div class="panel-body">
-
             <form class="form-inline" action="<?php echo Mage::helper("adminhtml")->getUrl("adminhtml/webhooks/redirectToApp"); ?>">
-
               <div class="form-group">
                 <label class="sr-only" for="app">App Url</label>
                 <input type="url" class="form-control" id="app" name="app" placeholder="App Url" required>
               </div>
-
               <button type="submit" class="btn btn-primary">Add</button>
-
             </form>
-
           </div>
+        </div>
 
+        <!--Apps list-->
+        <div class="ul webhooks-app-list">
+          <?php foreach($this->apps as $app){;?>
+            <li class="webhooks-app col-xs-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <a href="http://<?php echo $app->getDomain(); ?>" >
+                      <?php echo $app->getTitle(); ?>
+                    </a>
+                  </div>
+                  <div class="panel-body">
+                    <img src="<?php echo $app->getLogo()?>" class="webhooks-app-image">
+                    <a class="btn btn-xs btn-default">Remove</a>
+                  </div>
+                </div>
+            </li>
+          <?php }?>
         </div>
 
       </div>
     </div>
+    <!--end of row-->
   
+
   </div>
 </div>
 
