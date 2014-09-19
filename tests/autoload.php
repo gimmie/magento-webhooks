@@ -8,4 +8,5 @@ require_once 'Mage.php';
 //Start the Magento application
 Mage::app('default');
 //Avoid issues "Headers already send"
+session_start();
 ?>
