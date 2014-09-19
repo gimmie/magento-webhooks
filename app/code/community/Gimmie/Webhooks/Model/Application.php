@@ -8,9 +8,9 @@ class Gimmie_Webhooks_Model_Application extends Mage_Core_Model_Abstract {
   /*
    * @return Gimmie_Webhooks_Model_Application
    */
-  public static function getByKey($key) {
+  public static function getBySecret($secret) {
     $applications = Mage::getModel('webhooks/application')->getCollection();
-    $applications->addFilter('secret', $key);
+    $applications->addFilter('secret', $secret);
     if($applications->getFirstItem()->getData()==null){
       throw new Exception("Application with key $key does not exist.");
     }else{

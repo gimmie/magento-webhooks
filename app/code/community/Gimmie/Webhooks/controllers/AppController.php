@@ -17,6 +17,19 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $application->save();
   }
 
+  public function removeAction(){
+    $key= $this->getRequest()->getParams()['key'];
+    //remove app by secret
+    $secret = $this->getRequest()->getParams()['secret'];
+    $app = Gimmie_Webhooks_Model_Application::getBySecret($secret);
+    if($app){
+      //$app->delete();
+      $this->_redirect("/webhooks/index/key/$key");
+    } else {
+      $this->_redirect("/webhooks/index/key/$key", array('error'=>"Could not find Application."));
+    }
+  }
+
   public function registerAction() {
     $this->getResponse()->setHeader('Content-type', 'application/json');
     

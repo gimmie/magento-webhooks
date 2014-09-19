@@ -43,7 +43,8 @@
                   </div>
                   <div class="panel-body">
                     <img src="<?php echo $app->getLogo()?>" class="webhooks-app-image">
-                    <a class="btn btn-xs btn-default">Remove</a>
+                    <a href="<?php 
+            echo Mage::getUrl("webhooks/app/remove")."?secret=".$app->getSecret();?>" class="btn btn-xs btn-default">Remove</a>
                   </div>
                 </div>
             </li>

@@ -50,7 +50,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     
     // Query app from key
     try {
-      $application = Gimmie_Webhooks_Model_Application::getByKey($key);
+      $application = Gimmie_Webhooks_Model_Application::getBySecret($key);
     } catch (Exception $e){
       //If app is not found, redirect back to add application page.
       $this->_redirect("/webhooks/index/key/$key", array('error' => "Failed to link the application."));
