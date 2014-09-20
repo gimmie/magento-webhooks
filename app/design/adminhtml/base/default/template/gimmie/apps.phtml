@@ -43,9 +43,7 @@
                   </div>
                   <div class="panel-body">
                     <img src="<?php echo $app->getLogo()?>" class="webhooks-app-image">
-                    <a href="<?php 
-          echo Mage::getUrl("webhooks/app/remove", 
-            array('secret' => $app->getSecret(), 'key'=>$this->getRequest()->getParams()['key']));?>" class="btn btn-xs btn-default">Remove</a>
+                    <a href="javascript:remove_clicked();" class="btn btn-xs btn-default">Remove</a>
                   </div>
                 </div>
             </li>
@@ -59,4 +57,16 @@
 
   </div>
 </div>
+<script>
+  function remove_clicked(){
+    var confirm = window.confirm("Are you sure you want to remove <?php echo $app->getTitle();?>?");
+    if(confirm){
+      removeAction = "<?php echo Mage::getUrl("webhooks/app/remove", 
+        array('secret' => $app->getSecret(), 
+        'key'=>$this->getRequest()->getParams()['key']));?>";
+      window.location.href = removeAction;
+    }
+  }
+</script>
+
 
