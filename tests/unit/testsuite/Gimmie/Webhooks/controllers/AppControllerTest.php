@@ -10,16 +10,18 @@ class Gimmie_Webhooks_AppController_Test extends PHPUnit_Framework_Testcase{
 
   public function setUp()
   {
-    $this->controller = $this ->getMock('Gimmie_Webhooks_AppController', array('getRequest', 'getResponse', 'saveApplication', 'getJsonData'));
+    //any functions expected to be called by the controller must be added to the array
+    $this->controller = $this ->getMock('Gimmie_Webhooks_AppController',
+      array('getRequest', 'getResponse', 'saveApplication', 'getJsonData', 'getApplication', '_redirectUrl'));
 
     //Mock response to write to local variables instead
     
-    $res = $this->getMock('Mage_Core_Controller_Response_Http', array('setHeader', 'setBody')); 
-    $res->expects($this->once())->method('setHeader')
+    $res = $this->getMock('Mage_Core_Controller_Response_Http');//, array('setHeader', 'setBody')); 
+    $res->expects($this->any())->method('setHeader')
       ->will($this->returnCallback(function($key, $value){
         $this->header[$key] = $value;
       }));
-    $res->expects($this->once())->method('setBody')
+    $res->expects($this->any())->method('setBody')
       ->will($this->returnCallback(function($body){
         $this->body = $body;
       }));
@@ -92,6 +94,41 @@ class Gimmie_Webhooks_AppController_Test extends PHPUnit_Framework_Testcase{
     $this->assertEquals(array("Content-type" => "application/json"), $this->header);
     $this->assertEquals(Mage::helper('core')->jsonEncode(array("success" => false, 
     "error" => array("message" => "Missing Magento url secret keys."))), $this->body);
+  }
+
+  public function stubDeletingApplication(){
+    $hookApp = $this->getMock('Gimmie_Webhooks_Model_Application', array('delete')); 
+    $hookApp->expects($this->once())->method('delete')
+      ->will($this->returnValue("Deleted"));
+    $this->controller->expects($this->any())->method('getApplication')
+      ->will($this->returnValue($hookApp));
+  }
+
+  public function stubMissingApplication(){
+    $this->controller->expects($this->any())->method('getApplication')
+      ->will($this->returnCallback( function($secret){
+          return $app = Gimmie_Webhooks_Model_Application::getBySecret($secret);
+      }));
+  }
+
+  public function testRemoveActionShouldRedirectToAppListIndex(){
+    $params = Array('secret' => 'stubbed_deletable_app', 'key' => 'magento_key');
+    $this->setRequestParams($params);
+    $this->stubDeletingApplication();
+    $expectedRedirectParams = Array('key'=>'magento_key');
+    $this->controller->expects($this->once())->method('_redirectUrl')
+      ->with(Mage::getUrl("adminhtml/webhooks/index", $expectedRedirectParams));
+    $this->controller->removeAction();
+  }
+  public function testRemoveActionShouldRedirectToAppListIndexWithError(){
+    $params = Array('secret' => 'Non-existing-app', 'key' => 'magento_key');
+    $this->setRequestParams($params);
+    $this->stubMissingApplication();
+    $expectedRedirectParams = Array('key' => 'magento_key', 
+      'error' => 'Error removing application: Application with key Non-existing-app does not exist.');
+    $this->controller->expects($this->once())->method('_redirectUrl')
+      ->with(Mage::getUrl("adminhtml/webhooks/index", $expectedRedirectParams));
+    $this->controller->removeAction();
   }
 }
 ?>
