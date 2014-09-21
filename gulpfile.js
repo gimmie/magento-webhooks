@@ -65,8 +65,8 @@ Other multiline here
     'authors': [
       { 'author': {
           'name': 'Maythee Anegboonlap',
-          'user': 'maythee',
-          'email': 'maythee@gimmie.io'
+          'user': 'llun',
+          'email': 'null@llun.in.th'
         } 
       }
     ],
@@ -89,7 +89,7 @@ Other multiline here
 
 gulp.task('archive', [ 'generate:package' ], function () {
 
-  var packageFile = 'gimmie.tgz'
+  var packageFile = 'webhooks.tgz'
   var ignores = _([ 'node_modules', '.git', '.gitignore', 'package.json', 'gulpfile.js', packageFile ])
     .inject(function(r, v) {
       r[v] = true

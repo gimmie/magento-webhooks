@@ -10,6 +10,10 @@ class Gimmie_Webhooks_Model_Hooks {
     $layout = $observer->getEvent()->getLayout();
     $head = $layout->getBlock("head");
 
+    if (!is_object($head)) {
+      return;
+    }
+
     $applications = $this->_getEnabledApps();
     foreach($applications as $application) {
       $scripts = $application->getScripts();
@@ -76,8 +80,8 @@ class Gimmie_Webhooks_Model_Hooks {
       return;
     }
 
-    $product = $observer->getEvent()->getProduct();
-    Mage::log(print_r($observer->getEvent(), true));
+    $order = $observer->getEvent()->getOrder();
+    Mage::log(get_class($order));
 
     $data = $this->_getBaseData($observer);
     foreach($urls as $url) {
