@@ -2,7 +2,7 @@
 node_modules
 package.xml
 
-gimmie.tgz
+*.tgz
 app/
 !app/code/community/Gimmie
 !app/etc/modules/Gimmie_Webhooks.xml

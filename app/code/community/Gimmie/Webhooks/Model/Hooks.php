@@ -80,10 +80,28 @@ class Gimmie_Webhooks_Model_Hooks {
       return;
     }
 
-    $order = $observer->getEvent()->getOrder();
-    Mage::log(get_class($order));
+    $payment = $observer->getEvent()->getPayment();
+    $order = $payment->getOrder();
 
     $data = $this->_getBaseData($observer);
+    if (!$order->getCustomerIsGuest()) {
+      $data["user"] = array(
+        "id" => $order->getCustomerId(),
+        "name" => $order->getCustomerName(),
+        "email" => $order->getCustomerEmail()
+      );
+    }
+
+    $data["customer"] = array(
+      "name" => $order->getCustomerName(),
+      "email" => $order->getCustomerEmail(),
+      "birth" => Mage::getModel('core/date')->date(DATE_W3C, $order->getCustomerDob())
+    );
+    $data["order"] = array(
+      "hasInvoices" => (bool) $order->hasInvoices(),
+      "hasShipments" => (bool) $order->hasShipments()
+    );
+
     foreach($urls as $url) {
       $this->_sendData($url, $data);
     }

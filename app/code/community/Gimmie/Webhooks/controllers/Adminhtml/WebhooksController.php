@@ -15,7 +15,6 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $this->_setActiveMenu('gimmie/webhooks');
 
     $applications = Gimmie_Webhooks_Model_Application::getAllCollection();
-    Mage::log("indexxxxxxxxxxxxxxxxxxxxxxxxxx");
 
     $block = $this->getLayout()->createBlock(
       "Mage_Core_Block_Template",
