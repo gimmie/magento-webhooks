@@ -58,7 +58,7 @@ class Gimmie_Webhooks_Model_Hooks {
   }
 
   public function dispatchViewItem(Varien_Event_Observer $observer = null) {
-    $urls = $this->_getEventUrls('viewItem');
+    $urls = $this->_getEventUrls('viewProduct');
     if (count($urls) === 0) {
       return;
     }
@@ -81,8 +81,20 @@ class Gimmie_Webhooks_Model_Hooks {
     }
   }
 
-  public function dispatchPurchaseItem(Varien_Event_Observer $observer = null) {
-    $urls = $this->_getEventUrls('purchaseItem');
+  public function dispatchCheckoutItem(Varien_Event_Observer $observer = null) {
+    $urls = $this->_getEventUrls('checkout');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $data = $this->_getBaseData($observer);
+    foreach($urls as $url) {
+      $this->_sendData($url, $data);
+    }
+  }
+
+  public function dispatchPaidItem(Varien_Event_Observer $observer = null) {
+    $urls = $this->_getEventUrls('paid');
     if (count($urls) === 0) {
       return;
     }

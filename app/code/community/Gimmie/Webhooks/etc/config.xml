@@ -50,11 +50,21 @@
         </observers>
       </catalog_controller_product_view>
 
+      <checkout_onepage_controller_success_action>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchCheckoutItem</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </checkout_onepage_controller_success_action>
+
       <sales_order_payment_pay>
         <observers>
           <Gimmie_Webhooks>
             <class>Gimmie_Webhooks_Model_hooks</class>
-            <method>dispatchPurchaseItem</method>
+            <method>dispatchPaidItem</method>
             <type>singleton</type>
           </Gimmie_Webhooks>
         </observers>
