@@ -33,6 +33,13 @@ class Gimmie_Webhooks_Model_Hooks {
     }
 
     $data = $this->_getBaseData($observer);
+
+    $customer = $observer->getCustomer();
+    $data["user"] = array(
+      "id" => $customer->getId(),
+      "name" => $customer->getName(),
+      "email" => $customer->getEmail()
+    );
     foreach($urls as $url) {
       $this->_sendData($url, $data);
     }
