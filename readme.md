@@ -6,8 +6,9 @@ This plugin is provided an easier way to install 3rd party apps to Magento site.
 
 - Register
 - Login
-- View item
-- Purchases item
+- View Product
+- Checkout
+- Paid
 
 ## Installation
 
