@@ -39,7 +39,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $session = Mage::getSingleton("core/session",  array("name"=>"frontend"));
     $session->setData("appUrl", $appUrl);
 
-    $this->_redirectUrl("$appUrl?magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
+    $this->_redirectUrl("$appUrl?magento[return_url]=$returnUrl&magento[register_app_url]=$registerAppUrl");
   }
 
   /**
@@ -90,7 +90,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $session->unsetData('app');
     $session->unsetData('appUrl');
 
-    $this->_redirectUrl("$appUrl?magentosuccess=0&magentoreturn_url=$returnUrl&magentoregister_app_url=$registerAppUrl");
+    $this->_redirectUrl("$appUrl?magento[success]=0&magento[return_url]=$returnUrl&magento[register_app_url]=$registerAppUrl");
   }
 
   /**
@@ -106,7 +106,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
     $session->unsetData('app');
     $session->unsetData('appUrl');
 
-    $this->_redirectUrl("$appUrl?magentosuccess=1");
+    $this->_redirectUrl("$appUrl?magento[success]=1");
   }
 
   protected function _isAllowed() {
