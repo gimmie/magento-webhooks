@@ -85,6 +85,29 @@ class Gimmie_Webhooks_Model_Hooks {
     }
   }
 
+  public function dispatchUpdateCart(Varien_Event_Observer $observer = null, $product) {
+    $urls = $this->_getEventUrls('updateCart');
+    if (count($urls) === 0) {
+      return;
+    }
+
+    $data = $this->_getBaseData($observer);
+    Mage::log(print_r($data, 1));
+    Mage::log($product->getSku());
+  }
+
+  public function addToCart(Varien_Event_Observer $observer = null) {
+    print_r($observer);
+    $product = $observer->getProduct();
+    $this->dispatchUpdateCart($observer, $product);
+  }
+
+  public function removeFromCart(Varien_Event_Observer $observer = null) {
+    print_r($observer);
+    $product = $observer->getQuoteItem()->getProduct();
+    $this->dispatchUpdateCart($observer, $product);
+  }
+
   public function dispatchCheckoutItem(Varien_Event_Observer $observer = null) {
     $urls = $this->_getEventUrls('checkout');
     if (count($urls) === 0) {

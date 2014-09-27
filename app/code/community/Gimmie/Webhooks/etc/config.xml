@@ -60,6 +60,26 @@
         </observers>
       </checkout_onepage_controller_success_action>
 
+      <checkout_cart_add_product_complete>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>addToCart</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </checkout_cart_add_product_complete>
+
+      <sales_quote_remove_item>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>removeFromCart</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </sales_quote_remove_item>
+
       <sales_order_payment_pay>
         <observers>
           <Gimmie_Webhooks>
