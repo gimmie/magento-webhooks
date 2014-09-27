@@ -29,6 +29,12 @@ class Gimmie_Webhooks_AppController extends Mage_Core_Controller_Front_Action {
     $secret = $this->getRequest()->getParams()['secret'];
     try {
       $app = $this->getApplication($secret);
+      Mage::log(print_r($app->getEventsObject(), true));
+      $events = $app->getEventsObject();
+      if (array_key_exists("uninstall", $events)) {
+        $helper = Mage::helper('gimmie_webhooks');
+        $helper->send($events["uninstall"], array());
+      }
       $app->delete();
     } catch (Exception $e){
       $newParams['error'] = "Error removing application: {$e->getMessage()}";

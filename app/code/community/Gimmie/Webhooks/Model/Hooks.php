@@ -40,8 +40,10 @@ class Gimmie_Webhooks_Model_Hooks {
       "name" => $customer->getName(),
       "email" => $customer->getEmail()
     );
+
+    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
-      $this->_sendData($url, $data);
+      $helper->send($url, $data);
     }
   }
 
@@ -52,8 +54,9 @@ class Gimmie_Webhooks_Model_Hooks {
     }
 
     $data = $this->_getBaseData($observer);
+    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
-      $this->_sendData($url, $data);
+      $helper->send($url, $data);
     }
   }
 
@@ -76,8 +79,9 @@ class Gimmie_Webhooks_Model_Hooks {
       "isInStock" => $product->isInStock()
     );
 
+    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
-      $this->_sendData($url, $data);
+      $helper->send($url, $data);
     }
   }
 
@@ -88,8 +92,9 @@ class Gimmie_Webhooks_Model_Hooks {
     }
 
     $data = $this->_getBaseData($observer);
+    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
-      $this->_sendData($url, $data);
+      $helper->send($url, $data);
     }
   }
 
@@ -121,8 +126,9 @@ class Gimmie_Webhooks_Model_Hooks {
       "hasShipments" => (bool) $order->hasShipments()
     );
 
+    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
-      $this->_sendData($url, $data);
+      $helper->send($url, $data);
     }
   }
 
@@ -140,23 +146,6 @@ class Gimmie_Webhooks_Model_Hooks {
       $base["user"] = $user;
     }
     return $base;
-  }
-
-  private function _sendData($url, $jsonArray) {
-    Mage::log("Send to $url with ".print_r($jsonArray, true));
-
-    $jsonString = json_encode($jsonArray);
-
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-      'Content-Type: application/json',
-      'Content-Length: '.strlen($jsonString)
-    ));
-    curl_exec($ch);
-    curl_close($ch);
   }
 
   private function _getEnabledApps() {

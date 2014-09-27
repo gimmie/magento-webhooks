@@ -16,7 +16,7 @@
               <p>This application uses this events</p>
               <ul>
               <?php
-              $events = json_decode($this->app["events"], true);
+              $events = $this->app->getEventsObject();
               foreach ( $events as $hook=>$url ) { 
               ?>
                 <li><?php echo $hook; ?></li>
@@ -27,7 +27,7 @@
               <p>and embeds these script to your site</p>
               <ul>
               <?php 
-              $scripts = json_decode($this->app["scripts"], true);
+              $scripts = $this->app->getScriptsArray();
               foreach ( $scripts as $key=>$script ) { 
               ?>
                 <li><?php echo $script ?></li>

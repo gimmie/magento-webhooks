@@ -21,5 +21,13 @@ class Gimmie_Webhooks_Model_Application extends Mage_Core_Model_Abstract {
   public static function getAllCollection(){
     return Mage::getModel('webhooks/application')->getCollection();
   }
+
+  public function getEventsObject() {
+    return json_decode($this["events"], true);
+  }
+
+  public function getScriptsArray() {
+    return json_decode($this["scripts"], true);
+  }
 }
 ?>
