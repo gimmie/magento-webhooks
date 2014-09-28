@@ -68,7 +68,7 @@ class Gimmie_Webhooks_Adminhtml_WebhooksController extends Mage_Adminhtml_Contro
       "Mage_Core_Block_Template",
       "webhooks_admin",
       array("template" => "gimmie/allow.phtml")
-    )->setData('app', $application->getData());
+    )->setData('app', $application);
     $this->_addContent($block);
 
     $this->renderLayout();
