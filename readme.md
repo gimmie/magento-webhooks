@@ -31,7 +31,7 @@ Glossary from [#2](https://github.com/gimmie/magento-webhooks/issues/2)
 
 The MIT License
 
-Copyright (c) 2010-2014 Gimmieworld pte ltd. https://www.gimmie.io
+Copyright (c) 2014 Gimmieworld pte ltd. https://www.gimmie.io
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
