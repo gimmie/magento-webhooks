@@ -85,27 +85,44 @@ class Gimmie_Webhooks_Model_Hooks {
     }
   }
 
-  public function dispatchUpdateCart(Varien_Event_Observer $observer = null, $product) {
+  public function dispatchUpdateCart(Varien_Event_Observer $observer = null) {
     $urls = $this->_getEventUrls('updateCart');
     if (count($urls) === 0) {
       return;
     }
 
+    $cart = array();
+    $quote = Mage::getModel('checkout/cart')->getQuote();
+    foreach($quote->getAllVisibleItems() as $item) {
+      $product = $item->getProduct();
+
+      array_push($cart, array(
+        "id" => $product->getId(),
+        "name" => $product->getName(),
+        "url" => $product->getProductUrl(),
+        "price" => $product->getPrice(),
+        "created_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getCreatedAt()),
+        "updated_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getUpdatedAt()),
+        "isSaleable" => $product->isSaleable(),
+        "isInStock" => $product->isInStock()
+      ));
+    }
+
     $data = $this->_getBaseData($observer);
-    Mage::log(print_r($data, 1));
-    Mage::log($product->getSku());
+    $data["cart"] = $cart;
+
+    $helper = Mage::helper('gimmie_webhooks');
+    foreach($urls as $url) {
+      $helper->send($url, $data);
+    }
   }
 
   public function addToCart(Varien_Event_Observer $observer = null) {
-    print_r($observer);
-    $product = $observer->getProduct();
-    $this->dispatchUpdateCart($observer, $product);
+    $this->dispatchUpdateCart($observer);
   }
 
   public function removeFromCart(Varien_Event_Observer $observer = null) {
-    print_r($observer);
-    $product = $observer->getQuoteItem()->getProduct();
-    $this->dispatchUpdateCart($observer, $product);
+    $this->dispatchUpdateCart($observer);
   }
 
   public function dispatchCheckoutItem(Varien_Event_Observer $observer = null) {

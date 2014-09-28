@@ -60,6 +60,17 @@
         </observers>
       </checkout_onepage_controller_success_action>
 
+      <sales_order_payment_pay>
+        <observers>
+          <Gimmie_Webhooks>
+            <class>Gimmie_Webhooks_Model_hooks</class>
+            <method>dispatchPaidItem</method>
+            <type>singleton</type>
+          </Gimmie_Webhooks>
+        </observers>
+      </sales_order_payment_pay>
+
+      <!-- Cart experiment -->
       <checkout_cart_add_product_complete>
         <observers>
           <Gimmie_Webhooks>
@@ -79,16 +90,6 @@
           </Gimmie_Webhooks>
         </observers>
       </sales_quote_remove_item>
-
-      <sales_order_payment_pay>
-        <observers>
-          <Gimmie_Webhooks>
-            <class>Gimmie_Webhooks_Model_hooks</class>
-            <method>dispatchPaidItem</method>
-            <type>singleton</type>
-          </Gimmie_Webhooks>
-        </observers>
-      </sales_order_payment_pay>
 
     </events>
 
