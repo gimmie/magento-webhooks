@@ -66,20 +66,11 @@ class Gimmie_Webhooks_Model_Hooks {
       return;
     }
 
+    $helper = Mage::helper('gimmie_webhooks');
     $product = $observer->getEvent()->getProduct();
     $data = $this->_getBaseData($observer);
-    $data["product"] = array(
-      "id" => $product->getId(),
-      "name" => $product->getName(),
-      "url" => $product->getProductUrl(),
-      "price" => $product->getPrice(),
-      "created_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getCreatedAt()),
-      "updated_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getUpdatedAt()),
-      "isSaleable" => $product->isSaleable(),
-      "isInStock" => $product->isInStock()
-    );
+    $data["product"] = $helper->prepareProductArray($product); 
 
-    $helper = Mage::helper('gimmie_webhooks');
     foreach($urls as $url) {
       $helper->send($url, $data);
     }
@@ -99,17 +90,7 @@ class Gimmie_Webhooks_Model_Hooks {
     $items = array();
     foreach($quote->getAllVisibleItems() as $item) {
       $product = $item->getProduct();
-
-      array_push($items, array(
-        "id" => $product->getId(),
-        "name" => $product->getName(),
-        "url" => $product->getProductUrl(),
-        "price" => $product->getPrice(),
-        "created_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getCreatedAt()),
-        "updated_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getUpdatedAt()),
-        "isSaleable" => $product->isSaleable(),
-        "isInStock" => $product->isInStock()
-      ));
+      array_push($items, $helper->prepareProductArray($product));
     }
 
     $totals = array();

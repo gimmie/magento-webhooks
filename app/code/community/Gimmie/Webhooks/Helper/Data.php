@@ -26,6 +26,19 @@ class Gimmie_Webhooks_Helper_Data extends Mage_Core_Helper_Abstract {
     curl_close($ch);
   }
 
+  public function prepareProductArray(Mage_Catalog_Model_Product $product) {
+    return array(
+      "id" => $product->getId(),
+      "name" => $product->getName(),
+      "url" => $product->getProductUrl(),
+      "price" => $product->getFinalPrice(),
+      "created_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getCreatedAt()),
+      "updated_at" => Mage::getModel('core/date')->date(DATE_W3C, $product->getUpdatedAt()),
+      "isSaleable" => $product->isSaleable(),
+      "isInStock" => $product->isInStock()
+    );
+  }
+
   public function debug($data, $level=4) {
     static $innerLevel = 1;
     static $tabLevel = 1;
