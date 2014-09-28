@@ -91,12 +91,16 @@ class Gimmie_Webhooks_Model_Hooks {
       return;
     }
 
-    $cart = array();
-    $quote = Mage::getModel('checkout/cart')->getQuote();
+    $helper = Mage::helper('gimmie_webhooks');
+    $cart = Mage::getModel('checkout/cart');
+    $quote = $cart->getQuote();
+    $quote->collectTotals();
+
+    $items = array();
     foreach($quote->getAllVisibleItems() as $item) {
       $product = $item->getProduct();
 
-      array_push($cart, array(
+      array_push($items, array(
         "id" => $product->getId(),
         "name" => $product->getName(),
         "url" => $product->getProductUrl(),
@@ -108,21 +112,20 @@ class Gimmie_Webhooks_Model_Hooks {
       ));
     }
 
-    $data = $this->_getBaseData($observer);
-    $data["cart"] = $cart;
+    $totals = array();
+    foreach($quote->getTotals() as $key => $value) {
+      $totals[$key] = $value->getData()['value'];
+    }
 
-    $helper = Mage::helper('gimmie_webhooks');
+    $data = $this->_getBaseData($observer);
+    $data["cart"] = array(
+      "totals" => $totals,
+      "items" => $items
+    );
+
     foreach($urls as $url) {
       $helper->send($url, $data);
     }
-  }
-
-  public function addToCart(Varien_Event_Observer $observer = null) {
-    $this->dispatchUpdateCart($observer);
-  }
-
-  public function removeFromCart(Varien_Event_Observer $observer = null) {
-    $this->dispatchUpdateCart($observer);
   }
 
   public function dispatchCheckoutItem(Varien_Event_Observer $observer = null) {

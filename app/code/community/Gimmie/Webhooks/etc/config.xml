@@ -75,7 +75,7 @@
         <observers>
           <Gimmie_Webhooks>
             <class>Gimmie_Webhooks_Model_hooks</class>
-            <method>addToCart</method>
+            <method>dispatchUpdateCart</method>
             <type>singleton</type>
           </Gimmie_Webhooks>
         </observers>
@@ -85,7 +85,7 @@
         <observers>
           <Gimmie_Webhooks>
             <class>Gimmie_Webhooks_Model_hooks</class>
-            <method>removeFromCart</method>
+            <method>dispatchUpdateCart</method>
             <type>singleton</type>
           </Gimmie_Webhooks>
         </observers>
