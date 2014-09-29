@@ -4,11 +4,13 @@ This plugin is provided an easier way to install 3rd party apps to Magento site.
 
 ## Event hooks for app developer
 
-- Register
-- Login
-- View Product
-- Checkout
-- Paid
+- [Register](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#register-and-login-event-login-and-register)
+- [Login](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#register-and-login-event-login-and-register)
+- [View Product](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#view-product-event-viewproduct)
+- [Update Cart](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#update-cart-event-updatecart)
+- [Checkout](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#checkout-product-event-checkout)
+- [Paid](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#paid-event-paid)
+- [Uninstall](https://github.com/gimmie/magento-webhooks/wiki/Register-application-api-and-hooks-data#uninstall-app-event-uninstall)
 
 ## Installation
 
